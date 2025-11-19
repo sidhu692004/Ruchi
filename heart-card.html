@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruchi - Heart Card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Heart Shape Card */
+        .heart-card {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            cursor: pointer;
+            perspective: 1000px;
+        }
+
+        .heart-card:hover .heart-inner {
+            transform: rotateY(180deg);
+        }
+
+        .heart-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-style: preserve-3d;
+        }
+
+        .heart-front,
+        .heart-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+
+        .heart-front {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fd79a8 0%, #ff6b9d 100%);
+            border-radius: 50%;
+            box-shadow: 0 20px 60px rgba(253, 121, 168, 0.4), 
+                        0 0 0 4px rgba(255, 255, 255, 0.2);
+        }
+
+        .heart-back {
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            border-radius: 50%;
+            box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4),
+                        0 0 0 4px rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            text-align: center;
+        }
+
+        /* Heart SVG Style */
+        .heart-svg {
+            width: 150px;
+            height: 150px;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.1);
+            }
+            50% {
+                transform: scale(1);
+            }
+        }
+
+        /* Back Text */
+        .heart-back-text {
+            color: white;
+            font-size: 16px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .heart-back-text h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .heart-back-text p {
+            opacity: 0.95;
+            line-height: 1.8;
+        }
+
+        /* Name in Heart */
+        .heart-name {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* Hover Text */
+        .flip-hint {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 14px;
+            text-align: center;
+            opacity: 0.8;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Download Button */
+        .download-btn {
+            display: block;
+            margin: 50px auto 0;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .download-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Title */
+        .title {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 480px) {
+            .heart-card {
+                width: 250px;
+                height: 250px;
+            }
+
+            .heart-svg {
+                width: 120px;
+                height: 120px;
+            }
+
+            .heart-name {
+                font-size: 36px;
+            }
+
+            .heart-back-text h3 {
+                font-size: 18px;
+            }
+
+            .heart-back-text p {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <h1 class="title">💕 Ruchi's Heart Card 💕</h1>
+
+        <!-- Heart Card -->
+        <div class="heart-card">
+            <div class="heart-inner">
+                <!-- Front Side -->
+                <div class="heart-front">
+                    <svg class="heart-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50,85 C20,65 5,50 5,38 C5,25 15,18 25,18 C35,18 45,25 50,35 C55,25 65,18 75,18 C85,18 95,25 95,38 C95,50 80,65 50,85 Z" 
+                              fill="white" opacity="0.9"/>
+                    </svg>
+                    <div class="heart-name">RUCHI</div>
+                </div>
+
+                <!-- Back Side -->
+                <div class="heart-back">
+                    <div class="heart-back-text">
+                        <h3>💖 Ruchi 💖</h3>
+                        <p>"She makes everything beautiful with her presence"</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-hint">💫 Flip to see more 💫</div>
+        </div>
+
+        <button class="download-btn" onclick="downloadCard()">📥 Download Card</button>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 15) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Download card as image
+        function downloadCard() {
+            const card = document.querySelector('.heart-card');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 600;
+            canvas.height = 600;
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 600, 600);
+            gradient.addColorStop(0, '#fd79a8');
+            gradient.addColorStop(1, '#ff6b9d');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 600, 600);
+            
+            // Draw circle background
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.beginPath();
+            ctx.arc(300, 300, 150, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw heart shape
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            const x = 300;
+            const y = 280;
+            const size = 80;
+            
+            // Heart shape path
+            ctx.moveTo(x, y + size * 0.35);
+            
+            // Left side
+            ctx.bezierCurveTo(
+                x - size * 0.5, y - size * 0.3,
+                x - size * 0.5, y - size * 0.7,
+                x - size * 0.2, y - size * 0.7
+            );
+            
+            // Left dome
+            ctx.bezierCurveTo(
+                x - size * 0.05, y - size * 0.9,
+                x + size * 0.05, y - size * 0.9,
+                x, y - size * 0.65
+            );
+            
+            // Right dome
+            ctx.bezierCurveTo(
+                x + size * 0.05, y - size * 0.9,
+                x + size * 0.05, y - size * 0.7,
+                x + size * 0.2, y - size * 0.7
+            );
+            
+            // Right side
+            ctx.bezierCurveTo(
+                x + size * 0.5, y - size * 0.7,
+                x + size * 0.5, y - size * 0.3,
+                x, y + size * 0.35
+            );
+            
+            ctx.fill();
+            
+            // Draw name
+            ctx.font = 'bold 60px Arial';
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetY = 4;
+            ctx.fillText('RUCHI', 300, 320);
+            
+            // Download
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = 'ruchi-heart-card.png';
+            link.click();
+        }
+
+        // Add click animation
+        document.querySelector('.heart-card').addEventListener('click', function() {
+            this.style.animation = 'pulse 0.6s';
+            setTimeout(() => {
+                this.style.animation = '';
+            }, 600);
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
